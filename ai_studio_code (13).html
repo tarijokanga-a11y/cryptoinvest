@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoWealth - USDT Investment</title>
+    <style>
+        /* Premium Dark Theme */
+        :root {
+            --bg: #0b0f19; /* Deep Dark Blue */
+            --card-bg: #151b2b;
+            --primary: #00ff88; /* Neon Green for Profit */
+            --accent: #ffd700; /* Gold for Premium feel */
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 15px; text-align: center; }
+        .container { max-width: 500px; margin: auto; background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); border: 1px solid #232b3e; }
+        
+        .trust-badge { font-size: 13px; color: var(--accent); background: rgba(255, 215, 0, 0.1); padding: 5px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; border: 1px solid var(--accent); }
+        .motivational-text { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 6px; box-sizing: border-box; background: #0f1423; color: white; outline: none; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 5px rgba(0, 255, 136, 0.3); }
+        
+        button { width: 100%; padding: 12px; background: linear-gradient(90deg, #00b09b, #96c93d); color: #000; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        button:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none; }
+        
+        .hidden { display: none; }
+        .card { background: #1e2538; padding: 15px; margin-top: 15px; border-radius: 8px; text-align: left; border-left: 4px solid var(--primary); }
+        .card h3 { margin-top: 0; color: var(--primary); }
+        .plan-card { background: linear-gradient(145deg, #161b2b, #1a2235); padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid #2d3748; position: relative; overflow: hidden; }
+        .plan-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
+        
+        .link-text { color: var(--primary); cursor: pointer; font-size: 14px; margin-top: 15px; display: inline-block; }
+        .nav-buttons { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .nav-buttons button { background: #1e293b; color: white; margin: 0; font-size: 14px; padding: 10px; border-radius: 6px; flex: 1; border: 1px solid #334155; }
+        .nav-buttons button.active { background: var(--primary); color: #000; border: none; }
+        hr { border: 0.5px solid #334155; margin: 20px 0; }
+        .badge { font-size: 12px; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<!-- Login/Signup Section -->
+<div class="container" id="auth-section">
+    <div class="trust-badge">🔒 100% Secure & Verified Platform</div>
+    <h2 style="margin: 5px 0;">Start Your Journey</h2>
+    <p class="motivational-text">Invest smartly today and secure your financial future. Earn daily passive income with our transparent USDT TRC20 system.</p>
+    
+    <div id="login-form">
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login to Dashboard</button>
+        <span class="link-text" onclick="toggleAuth('signup')">Don't have an account? Sign Up</span>
+    </div>
+    
+    <div id="signup-form" class="hidden">
+        <input type="text" id="signup-name" placeholder="Full Name">
+        <input type="email" id="signup-email" placeholder="Email Address">
+        <input type="password" id="signup-password" placeholder="Password (Min 6 chars)">
+        <button onclick="signup()">Create Free Account</button>
+        <span class="link-text" onclick="toggleAuth('login')">Already have an account? Login</span>
+    </div>
+</div>
+
+<!-- Main Dashboard -->
+<div class="container hidden" id="dashboard-section">
+    <div class="nav-buttons">
+        <button id="btn-home" class="active" onclick="switchTab('home')">Home</button>
+        <button id="btn-deposit" onclick="switchTab('deposit')">Deposit</button>
+        <button id="btn-withdraw" onclick="switchTab('withdraw')">Withdraw</button>
+        <button onclick="logout()" style="background: #ef4444; color: white; border:none; flex: 0.5;">Exit</button>
+    </div>
+
+    <!-- Home Tab -->
+    <div id="tab-home">
+        <div class="trust-badge">💸 Welcome to CryptoWealth</div>
+        <h2 style="margin: 0; font-size: 20px;">Hello, <span id="user-name" style="color:var(--primary);">User</span></h2>
+        
+        <div class="card" style="text-align: center; border-left: none; background: linear-gradient(135deg, #1e2538, #111827); border: 1px solid #334155;">
+            <h3 style="color: var(--text-muted); font-size: 14px;">Total Balance</h3>
+            <h1 style="color: var(--accent); margin: 5px 0; font-size: 32px;"><span id="balance">0.00</span> <span style="font-size: 16px; color: var(--primary);">USDT</span></h1>
+        </div>
+
+        <hr>
+        <h3 style="text-align: left;">Active Plans (Daily Earnings)</h3>
+        <div id="active-investments"></div>
+
+        <hr>
+        <h3 style="text-align: left; color: var(--accent);">🔥 Hot VIP Plans</h3>
+        <p style="font-size: 13px; color: var(--text-muted); text-align: left;">High returns, guaranteed daily profits.</p>
+        <div id="plans-container"></div>
+    </div>
+
+    <!-- Deposit Tab -->
+    <div id="tab-deposit" class="hidden">
+        <h2 style="color: var(--primary);">Deposit USDT</h2>
+        <div class="card">
+            <p style="color: var(--accent); font-weight: bold; margin-top: 0;">Network: TRC20 Only</p>
+            <p style="font-size: 13px;">Minimum Deposit: <strong>10 USDT</strong><br>Deposits below 10 USDT will not be credited.</p>
+            
+            <input type="number" id="deposit-amount" placeholder="Enter Deposit Amount (Min 10)">
+            
+            <div style="background: #0f1423; padding: 10px; border-radius: 5px; word-break: break-all; margin: 10px 0; border: 1px dashed var(--primary);">
+                <strong style="color:var(--text-muted); font-size: 12px;">Admin's TRC20 Wallet Address:</strong><br>
+                <span id="wallet-address" style="color: white; font-weight: bold; letter-spacing: 1px;">TQxj9yP3Wwz... (Admin's Address)</span>
+            </div>
+            
+            <p style="font-size: 12px; color: #f59e0b;">Send exact amount, then enter your Transaction Hash (TXID) below to verify.</p>
+            <input type="text" id="deposit-txid" placeholder="Enter valid TXID Hash">
+            <button onclick="submitDeposit()">Submit Deposit Request</button>
+        </div>
+        <h3 style="text-align:left; margin-top: 20px;">Deposit History</h3>
+        <div id="deposit-history" style="text-align:left;"></div>
+    </div>
+
+    <!-- Withdraw Tab -->
+    <div id="tab-withdraw" class="hidden">
+        <h2 style="color: var(--accent);">Withdraw USDT</h2>
+        <div class="card" style="border-left-color: var(--accent);">
+            <p style="color: var(--accent); font-weight: bold; margin-top: 0;">Network: TRC20 Only</p>
+            <p style="font-size: 13px;">Minimum Withdrawal: <strong>2 USDT</strong><br>Processing time: 5-30 mins.</p>
+            
+            <input type="number" id="withdraw-amount" placeholder="Enter Amount (Min 2)">
+            <input type="text" id="withdraw-address" placeholder="Enter your USDT TRC20 Address">
+            
+            <button onclick="submitWithdraw()" style="background: linear-gradient(90deg, #f7b733, #fc4a1a); color: white;">Request Withdraw</button>
+        </div>
+        <h3 style="text-align:left; margin-top: 20px;">Withdraw History</h3>
+        <div id="withdraw-history" style="text-align:left;"></div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAr_-bAoiQUjA1X0PDGflDAgQNngUD-1eY",
+      authDomain: "crypto-invest-59692.firebaseapp.com",
+      databaseURL: "https://crypto-invest-59692-default-rtdb.firebaseio.com",
+      projectId: "crypto-invest-59692",
+      storageBucket: "crypto-invest-59692.firebasestorage.app",
+      messagingSenderId: "182027201348",
+      appId: "1:182027201348:web:a17047b308f0129f4cc511"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+    let currentUserUid = null;
+    let userEmail = null;
+    let userBalance = 0;
+
+    const vipPlans = [
+        { price: 10, daily: 1, days: 20 },
+        { price: 20, daily: 2, days: 30 },
+        { price: 30, daily: 3, days: 45 },
+        { price: 40, daily: 4, days: 45 },
+        { price: 50, daily: 5, days: 45 }
+    ];
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            currentUserUid = user.uid;
+            userEmail = user.email;
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            loadUserData();
+            loadDepositHistory();
+            loadWithdrawHistory();
+            renderPlans();
+        } else {
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
+        }
+    });
+
+    function toggleAuth(type) {
+        document.getElementById('login-form').classList.toggle('hidden', type === 'signup');
+        document.getElementById('signup-form').classList.toggle('hidden', type === 'login');
+    }
+
+    function signup() {
+        const email = document.getElementById("signup-email").value.trim();
+        const pass = document.getElementById("signup-password").value;
+        const name = document.getElementById("signup-name").value.trim();
+        if(!email || pass.length < 6 || !name) return alert("Fill all details! Password min 6 chars.");
+        auth.createUserWithEmailAndPassword(email, pass).then((cred) => {
+            db.ref('users/' + cred.user.uid).set({ name: name, email: email, balance: 0 });
+            alert("Account created successfully!");
+        }).catch(err => alert(err.message));
+    }
+
+    function login() {
+        const email = document.getElementById("email").value.trim();
+        const pass = document.getElementById("password").value;
+        auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+    }
+
+    function logout() { auth.signOut(); }
+
+    function switchTab(tab) {
+        ['home', 'deposit', 'withdraw'].forEach(t => {
+            document.getElementById('tab-' + t).classList.add('hidden');
+            document.getElementById('btn-' + t).classList.remove('active');
+        });
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+        document.getElementById('btn-' + tab).classList.add('active');
+    }
+
+    function loadUserData() {
+        db.ref('users/' + currentUserUid).on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                userBalance = data.balance || 0;
+                document.getElementById("user-name").innerText = data.name;
+                document.getElementById("balance").innerText = parseFloat(userBalance).toFixed(2);
+                loadActiveInvestments(data.investments);
+            }
+        });
+    }
+
+    // --- DEPOSIT SYSTEM ---
+    function submitDeposit() {
+        const amount = parseFloat(document.getElementById("deposit-amount").value);
+        const txid = document.getElementById("deposit-txid").value.trim();
+        if (isNaN(amount) || amount < 10) return alert("Minimum deposit is 10 USDT!");
+        if (txid.length < 10) return alert("Please provide a valid TXID!");
+
+        const reqId = "DEP_" + Date.now();
+        db.ref('deposit_requests/' + reqId).set({
+            uid: currentUserUid, email: userEmail, amount: amount, txid: txid, status: "Pending", time: new Date().toLocaleString()
+        }).then(() => {
+            alert("Deposit submitted! Admin will verify soon.");
+            document.getElementById("deposit-amount").value = "";
+            document.getElementById("deposit-txid").value = "";
+        });
+    }
+
+    function loadDepositHistory() {
+        db.ref('deposit_requests').orderByChild('uid').equalTo(currentUserUid).on('value', snap => {
+            const container = document.getElementById("deposit-history");
+            container.innerHTML = "";
+            snap.forEach(child => {
+                const dep = child.val();
+                let color = dep.status === "Approved" ? "#00ff88" : (dep.status === "Rejected" ? "#ef4444" : "#f59e0b");
+                container.innerHTML += `
+                    <div style="background:#1e2538; padding:10px; margin-bottom:8px; border-radius:5px; border-left: 3px solid ${color};">
+                        <p style="margin:0; font-size: 14px;">Amount: <strong>${dep.amount} USDT</strong> <span style="float:right; color:${color}; font-size:12px; font-weight:bold;">${dep.status}</span></p>
+                        <p style="margin:5px 0 0 0; font-size:11px; color:#94a3b8;">TXID: ${dep.txid}</p>
+                    </div>`;
+            });
+        });
+    }
+
+    // --- WITHDRAW SYSTEM ---
+    function submitWithdraw() {
+        const amount = parseFloat(document.getElementById("withdraw-amount").value);
+        const address = document.getElementById("withdraw-address").value.trim();
+        
+        if (isNaN(amount) || amount < 2) return alert("Minimum withdraw is 2 USDT!");
+        if (!address.startsWith("T") || address.length < 20) return alert("Please enter a valid USDT TRC20 Address (starts with 'T').");
+        if (amount > userBalance) return alert("Insufficient balance!");
+
+        const confirmW = confirm(`Are you sure you want to withdraw ${amount} USDT to ${address}?`);
+        if(!confirmW) return;
+
+        // Deduct instantly to prevent double spending
+        db.ref('users/' + currentUserUid).update({ balance: userBalance - amount });
+
+        const reqId = "WID_" + Date.now();
+        db.ref('withdraw_requests/' + reqId).set({
+            uid: currentUserUid, email: userEmail, amount: amount, address: address, status: "Pending", time: new Date().toLocaleString()
+        }).then(() => {
+            alert("Withdraw request submitted successfully!");
+            document.getElementById("withdraw-amount").value = "";
+            document.getElementById("withdraw-address").value = "";
+        });
+    }
+
+    function loadWithdrawHistory() {
+        db.ref('withdraw_requests').orderByChild('uid').equalTo(currentUserUid).on('value', snap => {
+            const container = document.getElementById("withdraw-history");
+            container.innerHTML = "";
+            snap.forEach(child => {
+                const wid = child.val();
+                let color = wid.status === "Approved" ? "#00ff88" : (wid.status === "Rejected" ? "#ef4444" : "#f59e0b");
+                container.innerHTML += `
+                    <div style="background:#1e2538; padding:10px; margin-bottom:8px; border-radius:5px; border-left: 3px solid ${color};">
+                        <p style="margin:0; font-size: 14px;">Amount: <strong>${wid.amount} USDT</strong> <span style="float:right; color:${color}; font-size:12px; font-weight:bold;">${wid.status}</span></p>
+                        <p style="margin:5px 0 0 0; font-size:11px; color:#94a3b8;">To: ${wid.address}</p>
+                    </div>`;
+            });
+        });
+    }
+
+    // --- VIP PLANS & INVESTMENTS ---
+    function renderPlans() {
+        const container = document.getElementById('plans-container');
+        container.innerHTML = "";
+        vipPlans.forEach((plan, index) => {
+            container.innerHTML += `
+                <div class="plan-card">
+                    <h3 style="color:var(--accent); margin-top:0; font-size:16px;">VIP Tier ${index + 1}</h3>
+                    <p style="margin:5px 0; font-size:14px; color:#e2e8f0;">Price: <strong style="color:var(--primary); font-size:16px;">${plan.price} USDT</strong></p>
+                    <p style="margin:5px 0; font-size:14px; color:#e2e8f0;">Daily Income: <strong style="color:#fff;">${plan.daily} USDT</strong></p>
+                    <p style="margin:5px 0; font-size:14px; color:#e2e8f0;">Validity: <strong>${plan.days} Days</strong></p>
+                    <button onclick="buyPlan(${index})" style="padding: 8px; font-size: 14px;">Invest Now</button>
+                </div>
+            `;
+        });
+    }
+
+    function buyPlan(index) {
+        const plan = vipPlans[index];
+        if (userBalance < plan.price) { alert("Insufficient balance! Please deposit."); switchTab('deposit'); return; }
+        if(!confirm(`Purchase VIP ${index+1} for ${plan.price} USDT?`)) return;
+
+        const invId = "INV_" + Date.now();
+        db.ref('users/' + currentUserUid).update({ balance: userBalance - plan.price });
+        db.ref('users/' + currentUserUid + '/investments/' + invId).set({
+            planPrice: plan.price, dailyProfit: plan.daily, daysLeft: plan.days, totalDays: plan.days, lastClaimTime: 0
+        });
+        alert("Investment Successful! Your daily income starts now.");
+    }
+
+    function loadActiveInvestments(investments) {
+        const container = document.getElementById('active-investments');
+        container.innerHTML = "";
+        if(!investments) { container.innerHTML = "<p style='color:var(--text-muted); font-size:13px;'>No active plans. Buy a VIP plan to start earning!</p>"; return; }
+
+        const now = Date.now();
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+        for (let key in investments) {
+            const inv = investments[key];
+            if(inv.daysLeft <= 0) continue;
+
+            const canClaim = (now - inv.lastClaimTime >= ONE_DAY_MS) || inv.lastClaimTime === 0;
+
+            container.innerHTML += `
+                <div class="plan-card" style="border-left-color: var(--primary);">
+                    <p style="margin:3px 0; font-size:14px;">Invested: <strong>${inv.planPrice} USDT</strong></p>
+                    <p style="margin:3px 0; font-size:14px;">Daily Profit: <strong style="color:var(--primary);">+${inv.dailyProfit} USDT</strong></p>
+                    <p style="margin:3px 0; font-size:12px; color:var(--text-muted);">Remaining: ${inv.daysLeft} Days</p>
+                    <button ${canClaim ? '' : 'disabled'} 
+                        style="${canClaim ? 'background: var(--primary); color: #000;' : 'background: #334155;'}; padding: 8px; font-size: 14px;"
+                        onclick="claimProfit('${key}', ${inv.dailyProfit}, ${inv.daysLeft})">
+                        ${canClaim ? 'Claim Profit' : 'Check back tomorrow'}
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    function claimProfit(invId, profitAmount, currentDaysLeft) {
+        db.ref('users/' + currentUserUid).update({ balance: userBalance + profitAmount });
+        db.ref('users/' + currentUserUid + '/investments/' + invId).update({
+            daysLeft: currentDaysLeft - 1, lastClaimTime: Date.now()
+        }).then(() => alert(`Successfully claimed +${profitAmount} USDT!`));
+    }
+</script>
+</body>
+</html>
