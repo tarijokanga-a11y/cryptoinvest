@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Invest - Professional USDT Platform</title>
+    <style>
+        /* Premium Dark Theme */
+        :root { --bg: #0b0f19; --card-bg: #151b2b; --primary: #00ff88; --accent: #ffd700; --text-main: #ffffff; --text-muted: #94a3b8; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 15px; text-align: center; display: flex; flex-direction: column; min-height: 95vh; }
+        .main-wrapper { flex: 1; }
+        .container { max-width: 500px; margin: auto; background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); border: 1px solid #232b3e; }
+        .brand-logo { font-size: 24px; font-weight: bold; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
+        .brand-logo span { color: var(--accent); }
+        .trust-badge { font-size: 13px; color: var(--accent); background: rgba(255, 215, 0, 0.1); padding: 5px 12px; border-radius: 20px; display: inline-block; margin-bottom: 15px; border: 1px solid var(--accent); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #334155; border-radius: 6px; box-sizing: border-box; background: #0f1423; color: white; outline: none; }
+        input:focus { border-color: var(--primary); }
+        button { width: 100%; padding: 12px; background: linear-gradient(90deg, #00b09b, #96c93d); color: #000; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.3s; text-transform: uppercase; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        button:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none; }
+        .hidden { display: none; }
+        .card { background: #1e2538; padding: 15px; margin-top: 15px; border-radius: 8px; text-align: left; border-left: 4px solid var(--primary); }
+        .plan-card { background: linear-gradient(145deg, #161b2b, #1a2235); padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid #2d3748; position: relative; overflow: hidden; text-align: left; }
+        .link-text { color: var(--primary); cursor: pointer; font-size: 14px; margin-top: 15px; display: inline-block; font-weight: bold; }
+        .nav-buttons { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .nav-buttons button { background: #1e293b; color: white; margin: 0; font-size: 14px; padding: 10px; border-radius: 6px; flex: 1; border: 1px solid #334155; }
+        .nav-buttons button.active { background: var(--primary); color: #000; border: none; font-weight: bold; }
+        hr { border: 0.5px solid #334155; margin: 20px 0; }
+        .footer-wrapper { max-width: 500px; margin: 30px auto 10px; text-align: center; padding: 15px 10px; border-top: 1px solid #232b3e; }
+        .footer-links a { color: var(--primary); text-decoration: none; font-size: 13px; margin: 0 5px; }
+        .footer-text { color: var(--text-muted); font-size: 12px; margin: 5px 0; }
+        .ref-box { display: flex; gap: 5px; margin-top: 10px; }
+        .ref-box input { margin: 0; flex: 1; font-size: 12px; background: #0b0f19; }
+        .ref-box button { margin: 0; width: auto; padding: 0 15px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <!-- Auth Section -->
+    <div class="container" id="auth-section">
+        <div class="brand-logo">🪙 Crypto <span>Invest</span></div>
+        <div class="trust-badge">🎁 Sign Up Now & Get 1 USDT Bonus!</div>
+        
+        <div id="login-form">
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">Login to Dashboard</button>
+            <span class="link-text" onclick="toggleAuth('signup')">Create a New Account</span>
+        </div>
+        
+        <div id="signup-form" class="hidden">
+            <input type="text" id="signup-name" placeholder="Full Name">
+            <input type="email" id="signup-email" placeholder="Email Address">
+            <input type="password" id="signup-password" placeholder="Password (Min 6 chars)">
+            <button onclick="signup()">Create Free Account</button>
+            <span class="link-text" onclick="toggleAuth('login')">Already have an account? Login</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div class="container hidden" id="dashboard-section">
+        <div class="brand-logo" style="font-size: 20px; margin-bottom: 20px;">🪙 Crypto <span>Invest</span></div>
+        
+        <div class="nav-buttons">
+            <button id="btn-home" class="active" onclick="switchTab('home')">Home</button>
+            <button id="btn-deposit" onclick="switchTab('deposit')">Deposit</button>
+            <button id="btn-withdraw" onclick="switchTab('withdraw')">Withdraw</button>
+            <button onclick="logout()" style="background: #ef4444; color: white; border:none; flex: 0.5;">Exit</button>
+        </div>
+
+        <!-- Home Tab -->
+        <div id="tab-home">
+            <h2 style="margin: 0; font-size: 18px; text-align: left;">Welcome, <span id="user-name" style="color:var(--primary);">User</span></h2>
+            
+            <div class="card" style="text-align: center; border-left: none; background: linear-gradient(135deg, #1e2538, #111827);">
+                <h3 style="color: var(--text-muted); font-size: 14px;">Total Portfolio Balance</h3>
+                <h1 style="color: var(--accent); margin: 5px 0; font-size: 36px;"><span id="balance">0.00</span> <span style="font-size: 16px; color: var(--primary);">USDT</span></h1>
+            </div>
+
+            <!-- Refer & Earn Section -->
+            <div class="card" style="border-left-color: #007bff;">
+                <h3 style="color: #007bff; margin: 0;">🤝 Refer & Earn (1 USDT)</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin: 5px 0;">Share your link. You get 1 USDT for every successful signup!</p>
+                <div class="ref-box">
+                    <input type="text" id="ref-link" readonly>
+                    <button onclick="copyRef()">Copy</button>
+                </div>
+            </div>
+
+            <hr>
+            <h3 style="text-align: left;">Your Active Investments</h3>
+            <div id="active-investments"></div>
+
+            <hr>
+            <h3 style="text-align: left; color: var(--accent);">🔥 Premium VIP Plans</h3>
+            <div id="plans-container"></div>
+        </div>
+
+        <!-- Deposit Tab -->
+        <div id="tab-deposit" class="hidden">
+            <h2 style="color: var(--primary); text-align: left;">Deposit USDT (TRC20)</h2>
+            <div class="card">
+                <p style="font-size: 13px;">Minimum Deposit: <strong>10 USDT</strong></p>
+                <input type="number" id="deposit-amount" placeholder="Enter Deposit Amount (Min 10)">
+                <div style="background: #0f1423; padding: 12px; border-radius: 5px; margin: 10px 0; border: 1px dashed var(--primary);">
+                    <strong style="color:var(--text-muted); font-size: 12px;">Admin's TRC20 Wallet Address:</strong><br>
+                    <span style="color: white; font-weight: bold; display: block; margin-top: 5px;">TDLKR6ttHqVvULHoR6FVk2j3so8E8uUJWD</span>
+                </div>
+                <input type="text" id="deposit-txid" placeholder="Enter valid TXID Hash here">
+                <button onclick="submitDeposit()">Submit Deposit Request</button>
+            </div>
+            <div id="deposit-history" style="text-align:left; margin-top: 15px;"></div>
+        </div>
+
+        <!-- Withdraw Tab -->
+        <div id="tab-withdraw" class="hidden">
+            <h2 style="color: var(--accent); text-align: left;">Withdraw Funds</h2>
+            <div class="card" style="border-left-color: var(--accent);">
+                <p style="font-size: 13px; color: #f59e0b;" id="withdraw-warning">⚠️ You must make at least one deposit to unlock withdrawals.</p>
+                <p style="font-size: 13px;">Minimum Withdrawal: <strong>2 USDT</strong> (TRC20)</p>
+                
+                <input type="number" id="withdraw-amount" placeholder="Enter Amount (Min 2 USDT)">
+                <input type="text" id="withdraw-address" placeholder="Enter your USDT TRC20 Address">
+                
+                <button id="btn-submit-withdraw" onclick="submitWithdraw()" style="background: linear-gradient(90deg, #f7b733, #fc4a1a); color: white;">Confirm Withdraw</button>
+            </div>
+            <div id="withdraw-history" style="text-align:left; margin-top: 15px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-wrapper">
+    <div class="footer-links">
+        <a href="#">About Us</a> | <a href="#">Privacy</a> | <a href="#">Terms</a>
+    </div>
+    <p class="footer-text">&copy; 2026 Crypto Invest. All Rights Reserved.</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAr_-bAoiQUjA1X0PDGflDAgQNngUD-1eY",
+      authDomain: "crypto-invest-59692.firebaseapp.com",
+      databaseURL: "https://crypto-invest-59692-default-rtdb.firebaseio.com",
+      projectId: "crypto-invest-59692",
+      storageBucket: "crypto-invest-59692.firebasestorage.app",
+      messagingSenderId: "182027201348",
+      appId: "1:182027201348:web:a17047b308f0129f4cc511"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+    let currentUserUid = null;
+    let userEmail = null;
+    let userBalance = 0;
+    let hasDeposited = false;
+
+    const vipPlans = [
+        { price: 10, daily: 1, days: 20 },
+        { price: 20, daily: 2, days: 30 },
+        { price: 30, daily: 3, days: 45 },
+        { price: 40, daily: 4, days: 45 },
+        { price: 50, daily: 5, days: 45 }
+    ];
+
+    // Check Referral Link
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    if(refCode) { localStorage.setItem('referred_by', refCode); }
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            currentUserUid = user.uid;
+            userEmail = user.email;
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            document.getElementById('ref-link').value = `https://cryptoinvest-one.vercel.app/?ref=${currentUserUid}`;
+            loadUserData();
+            loadDepositHistory();
+            loadWithdrawHistory();
+            renderPlans();
+        } else {
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
+        }
+    });
+
+    function toggleAuth(type) {
+        document.getElementById('login-form').classList.toggle('hidden', type === 'signup');
+        document.getElementById('signup-form').classList.toggle('hidden', type === 'login');
+    }
+
+    function signup() {
+        if(localStorage.getItem("device_registered")) {
+            return alert("Error: You can only create ONE account per device!");
+        }
+
+        const email = document.getElementById("signup-email").value.trim();
+        const pass = document.getElementById("signup-password").value;
+        const name = document.getElementById("signup-name").value.trim();
+        if(!email || pass.length < 6 || !name) return alert("Fill all details! Password min 6 chars.");
+        
+        auth.createUserWithEmailAndPassword(email, pass).then((cred) => {
+            // Give 1 USDT Signup Bonus & Set hasDeposited to false
+            db.ref('users/' + cred.user.uid).set({ name: name, email: email, balance: 1, hasDeposited: false });
+            
+            localStorage.setItem("device_registered", "true"); // Lock device
+
+            // Credit the Referrer
+            const referrer = localStorage.getItem('referred_by');
+            if(referrer && referrer !== cred.user.uid) {
+                db.ref('users/' + referrer).once('value').then(snap => {
+                    if(snap.exists()) {
+                        let refBal = snap.val().balance || 0;
+                        db.ref('users/' + referrer).update({ balance: refBal + 1 });
+                    }
+                });
+            }
+            alert("Account created! You got 1 USDT Bonus.");
+        }).catch(err => alert(err.message));
+    }
+
+    function login() {
+        const email = document.getElementById("email").value.trim();
+        const pass = document.getElementById("password").value;
+        auth.signInWithEmailAndPassword(email, pass).catch(err => alert("Login Failed: " + err.message));
+    }
+
+    function logout() { auth.signOut(); }
+
+    function switchTab(tab) {
+        ['home', 'deposit', 'withdraw'].forEach(t => {
+            document.getElementById('tab-' + t).classList.add('hidden');
+            document.getElementById('btn-' + t).classList.remove('active');
+        });
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+        document.getElementById('btn-' + tab).classList.add('active');
+    }
+
+    function copyRef() {
+        const link = document.getElementById("ref-link");
+        link.select();
+        document.execCommand("copy");
+        alert("Referral Link Copied! Share and earn 1 USDT per signup.");
+    }
+
+    function loadUserData() {
+        db.ref('users/' + currentUserUid).on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                userBalance = data.balance || 0;
+                hasDeposited = data.hasDeposited || false;
+                
+                document.getElementById("user-name").innerText = data.name;
+                document.getElementById("balance").innerText = parseFloat(userBalance).toFixed(2);
+                
+                if(hasDeposited) {
+                    document.getElementById("withdraw-warning").style.display = "none";
+                }
+
+                loadActiveInvestments(data.investments);
+            }
+        });
+    }
+
+    // --- DEPOSIT SYSTEM ---
+    function submitDeposit() {
+        const amount = parseFloat(document.getElementById("deposit-amount").value);
+        const txid = document.getElementById("deposit-txid").value.trim();
+        if (isNaN(amount) || amount < 10) return alert("Minimum deposit is 10 USDT!");
+        if (txid.length < 10) return alert("Please provide a valid TXID!");
+
+        const reqId = "DEP_" + Date.now();
+        db.ref('deposit_requests/' + reqId).set({
+            uid: currentUserUid, email: userEmail, amount: amount, txid: txid, status: "Pending", time: new Date().toLocaleString()
+        }).then(() => {
+            alert("Deposit submitted!");
+            document.getElementById("deposit-amount").value = "";
+            document.getElementById("deposit-txid").value = "";
+        });
+    }
+
+    // --- WITHDRAW SYSTEM ---
+    function submitWithdraw() {
+        if(!hasDeposited) return alert("❌ Withdrawal Blocked: You must make at least one successful deposit (Min 10 USDT) to unlock withdrawals.");
+
+        const amount = parseFloat(document.getElementById("withdraw-amount").value);
+        const address = document.getElementById("withdraw-address").value.trim();
+        
+        if (isNaN(amount) || amount < 2) return alert("Minimum withdraw is 2 USDT!");
+        if (!address.startsWith("T") || address.length < 20) return alert("Invalid TRC20 Address!");
+        if (amount > userBalance) return alert("Insufficient balance!");
+
+        if(!confirm(`Withdraw ${amount} USDT to ${address}?`)) return;
+
+        db.ref('users/' + currentUserUid).update({ balance: userBalance - amount });
+        const reqId = "WID_" + Date.now();
+        db.ref('withdraw_requests/' + reqId).set({
+            uid: currentUserUid, email: userEmail, amount: amount, address: address, status: "Pending", time: new Date().toLocaleString()
+        }).then(() => {
+            alert("Withdraw request submitted!");
+            document.getElementById("withdraw-amount").value = "";
+            document.getElementById("withdraw-address").value = "";
+        });
+    }
+
+    function loadDepositHistory() {
+        db.ref('deposit_requests').orderByChild('uid').equalTo(currentUserUid).on('value', snap => {
+            const container = document.getElementById("deposit-history");
+            container.innerHTML = "<h4>Recent Deposits</h4>";
+            snap.forEach(child => {
+                const dep = child.val();
+                let color = dep.status === "Approved" ? "#00ff88" : (dep.status === "Rejected" ? "#ef4444" : "#f59e0b");
+                container.innerHTML += `<div style="background:#1e2538; padding:10px; margin-bottom:5px; border-left: 3px solid ${color};"><p style="margin:0; font-size:14px;"><strong>${dep.amount} USDT</strong> <span style="float:right; color:${color}; font-size:12px;">${dep.status}</span></p></div>`;
+            });
+        });
+    }
+
+    function loadWithdrawHistory() {
+        db.ref('withdraw_requests').orderByChild('uid').equalTo(currentUserUid).on('value', snap => {
+            const container = document.getElementById("withdraw-history");
+            container.innerHTML = "<h4>Recent Withdrawals</h4>";
+            snap.forEach(child => {
+                const wid = child.val();
+                let color = wid.status === "Approved" ? "#00ff88" : (wid.status === "Rejected" ? "#ef4444" : "#f59e0b");
+                container.innerHTML += `<div style="background:#1e2538; padding:10px; margin-bottom:5px; border-left: 3px solid ${color};"><p style="margin:0; font-size:14px;"><strong>${wid.amount} USDT</strong> <span style="float:right; color:${color}; font-size:12px;">${wid.status}</span></p></div>`;
+            });
+        });
+    }
+
+    // --- VIP PLANS ---
+    function renderPlans() {
+        const container = document.getElementById('plans-container');
+        container.innerHTML = "";
+        vipPlans.forEach((plan, index) => {
+            container.innerHTML += `
+                <div class="plan-card">
+                    <h3 style="color:var(--accent); margin-top:0; font-size:16px;">VIP Tier ${index + 1}</h3>
+                    <p style="margin:4px 0; font-size:14px;">Price: <strong style="color:var(--primary);">${plan.price} USDT</strong></p>
+                    <p style="margin:4px 0; font-size:14px;">Daily Income: <strong>${plan.daily} USDT</strong></p>
+                    <p style="margin:4px 0; font-size:14px;">Validity: <strong>${plan.days} Days</strong></p>
+                    <button onclick="buyPlan(${index})" style="padding: 10px; font-size: 14px;">Invest Now</button>
+                </div>
+            `;
+        });
+    }
+
+    function buyPlan(index) {
+        const plan = vipPlans[index];
+        if (userBalance < plan.price) return alert("Insufficient balance! Please deposit.");
+        if(!confirm(`Purchase VIP ${index+1} for ${plan.price} USDT?`)) return;
+
+        const invId = "INV_" + Date.now();
+        db.ref('users/' + currentUserUid).update({ balance: userBalance - plan.price });
+        db.ref('users/' + currentUserUid + '/investments/' + invId).set({
+            planPrice: plan.price, dailyProfit: plan.daily, daysLeft: plan.days, totalDays: plan.days, lastClaimTime: 0
+        });
+        alert("Investment Successful!");
+    }
+
+    function loadActiveInvestments(investments) {
+        const container = document.getElementById('active-investments');
+        container.innerHTML = "";
+        if(!investments) { container.innerHTML = "<p style='font-size:13px; color:#94a3b8;'>No active plans.</p>"; return; }
+
+        const now = Date.now();
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+        for (let key in investments) {
+            const inv = investments[key];
+            if(inv.daysLeft <= 0) continue;
+
+            const canClaim = (now - inv.lastClaimTime >= ONE_DAY_MS) || inv.lastClaimTime === 0;
+
+            container.innerHTML += `
+                <div class="plan-card" style="border-left-color: var(--primary);">
+                    <p style="margin:3px 0; font-size:14px;">Invested: <strong>${inv.planPrice} USDT</strong></p>
+                    <p style="margin:3px 0; font-size:14px;">Daily Profit: <strong style="color:var(--primary);">+${inv.dailyProfit} USDT</strong></p>
+                    <p style="margin:3px 0; font-size:12px; color:var(--text-muted);">Remaining: ${inv.daysLeft} Days</p>
+                    <button ${canClaim ? '' : 'disabled'} style="${canClaim ? 'background: var(--primary); color: #000;' : 'background: #334155;'}; padding: 8px; font-size: 14px;" onclick="claimProfit('${key}', ${inv.dailyProfit}, ${inv.daysLeft})">
+                        ${canClaim ? 'Claim Daily Profit' : 'Check back tomorrow'}
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    function claimProfit(invId, profitAmount, currentDaysLeft) {
+        db.ref('users/' + currentUserUid).update({ balance: userBalance + profitAmount });
+        db.ref('users/' + currentUserUid + '/investments/' + invId).update({
+            daysLeft: currentDaysLeft - 1, lastClaimTime: Date.now()
+        }).then(() => alert(`Successfully claimed +${profitAmount} USDT!`));
+    }
+</script>
+</body>
+</html>
